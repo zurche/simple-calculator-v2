@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/zurche/simple calculator v2/proj/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zu/values-zu.xml",
+            "outputFile": "/home/zurche/simple calculator v2/SimpleCalculatorTST/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zu/values-zu.xml",
             "map": [
                 {
                     "source": "/home/zurche/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/a6dea7d55cd814235dad486074890d0e/res/values-zu/values-zu.xml",
