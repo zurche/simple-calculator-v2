@@ -1,0 +1,27 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        applicationId "com.example.zurche.simplecalculator.app"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+       release {
+           shrinkResources true
+           minifyEnabled true
+           proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+       }
+    }
+
+}
+
+dependencies {
+    implementation project(':calculator')
+    implementation project(':base')
+}

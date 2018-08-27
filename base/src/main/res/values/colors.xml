@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="input_pad_background">#333333</color>
+    <color name="operators_pad_background">#3b978a</color>
+    <color name="dark_operators_pad_background">#2a6b62</color>
+    <color name="numbers_background">#6ecabd</color>
+    <color name="equals_background">#81d1c5</color>
+</resources>

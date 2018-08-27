@@ -1,0 +1,27 @@
+<resources>
+    <string name="ac" translatable="false">AC</string>
+    <string name="value_update" translatable="false">+/-</string>
+    <string name="percentage" translatable="false">%</string>
+    <string name="divide" translatable="false">÷</string>
+    <string name="divide_operator" translatable="false">/</string>
+    <string name="seven" translatable="false">7</string>
+    <string name="eight" translatable="false">8</string>
+    <string name="nine" translatable="false">9</string>
+    <string name="multiply" translatable="false">x</string>
+    <string name="multiply_expression" translatable="false">*</string>
+    <string name="four" translatable="false">4</string>
+    <string name="five" translatable="false">5</string>
+    <string name="six" translatable="false">6</string>
+    <string name="plus" translatable="false">+</string>
+    <string name="one" translatable="false">1</string>
+    <string name="two" translatable="false">2</string>
+    <string name="three" translatable="false">3</string>
+    <string name="minus" translatable="false">-</string>
+    <string name="zero" translatable="false">0</string>
+    <string name="comma" translatable="false">,</string>
+    <string name="comma_expression" translatable="false">.</string>
+    <string name="equals" translatable="false">=</string>
+
+    <!-- Messages -->
+    <string name="invalid_expression_message">Invalid expression</string>
+</resources>

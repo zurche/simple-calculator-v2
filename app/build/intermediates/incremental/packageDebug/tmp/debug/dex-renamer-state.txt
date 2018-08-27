@@ -1,0 +1,4 @@
+#Sat Aug 18 09:54:27 ART 2018
+base.0=/home/zurche/simple calculator v2/proj/app/build/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex
