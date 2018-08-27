@@ -1,7 +1,7 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:background">@color/input_pad_background</item>
+        <item name="android:windowBackground">@color/input_pad_background</item>
     </style>
 
     <!-- Pad Item Base Style -->
