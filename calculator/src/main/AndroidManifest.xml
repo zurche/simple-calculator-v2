@@ -11,7 +11,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:host="github.com/zurche/simple-calculator-v2/tree/master/instantapp"/>
+                <data android:host="aw.githubusercontent.com/zurche/simple-calculator-v2/master/img/playstore"/>
                 <data android:pathPattern="/"/>
                 <data android:scheme="https"/>
                 <data android:scheme="http"/>
