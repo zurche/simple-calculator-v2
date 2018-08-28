@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "zurche.simplecalculator.app",
+    "sha256_cert_fingerprints":
+    ["CF:94:A7:22:B6:35:7F:B8:E6:B7:C7:98:4B:4B:2E:C9:A3:D0:2A:7D:06:32:0B:F2:94:11:7F:55:BD:F5:7D:EA"]
+  }
+}]

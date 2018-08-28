@@ -11,24 +11,17 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data
-                    android:host="calculator.com"
-                    android:pathPattern="/.*"
-                    android:scheme="https" />
+                <data android:host="github.com/zurche/simple-calculator-v2/tree/master/instantapp"/>
+                <data android:pathPattern="/"/>
+                <data android:scheme="https"/>
+                <data android:scheme="http"/>
 
-                <data
-                    android:host="calculator.com"
-                    android:pathPattern="/.*"
-                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data
-                android:name="default-url"
-                android:value="https://calculator.com" />
         </activity>
     </application>
 
