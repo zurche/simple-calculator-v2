@@ -1,4 +1,4 @@
-package com.example.zurche.simplecalculator.calculator
+package zurche.simplecalculator.calculator
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

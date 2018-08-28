@@ -1,4 +1,4 @@
-package com.example.zurche.simplecalculator.calculator
+package zurche.simplecalculator.calculator
 
 import com.udojava.evalex.Expression
 import java.math.BigDecimal

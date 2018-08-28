@@ -1,4 +1,4 @@
-package com.example.zurche.simplecalculator.calculator
+package zurche.simplecalculator.calculator
 
 interface CalculatorContract {
 
