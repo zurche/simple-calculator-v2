@@ -4,7 +4,7 @@
 
 [![](https://owncloud.org/wp-content/themes/owncloudorgnew/assets/img/clients/buttons/googleplay.png)](https://play.google.com/store/apps/details?id=zurche.simplecalculator.app)
 
-# simple-calc
+# simple-calculator-v2
 A simple android calculator created in collaboration with the UI design of [Andrea Chiara De Santis](https://www.behance.net/andydesa) and the power of the [EvalEx](https://github.com/uklimaschewski/EvalEx) library created by [Udo Klimaschewski](https://github.com/uklimaschewski)
 
 * [InstantApp](https://developer.android.com/topic/google-play-instant/)
