@@ -91,7 +91,7 @@
         tools:text="15x32+165/4+56+8+1" />
 
     <TextView
-        android:id="@+id/result"
+        android:id="@+id/operation_result"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="10dp"
