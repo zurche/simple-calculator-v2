@@ -7,7 +7,6 @@
 # simple-calculator-v2
 A simple android calculator created in collaboration with the UI design of [Andrea Chiara De Santis](https://www.behance.net/andydesa) and the power of the [EvalEx](https://github.com/uklimaschewski/EvalEx) library created by [Udo Klimaschewski](https://github.com/uklimaschewski)
 
-* [InstantApp](https://developer.android.com/topic/google-play-instant/)
 * Made in [Kotlin](https://kotlinlang.org/)
 * Designed Using [ConstraintLayouts](https://developer.android.com/training/constraint-layout/) to support any form factor
 * App has an [Adaptive Launcher Icon](https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive)
