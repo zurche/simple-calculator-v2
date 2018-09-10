@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.main_act.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,23 +13,31 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.main_act)
 
         mCalculatorViewModel = ViewModelProviders.of(this).get(CalculatorViewModel::class.java)
 
-        mCalculatorViewModel!!.getInvalidExpressionMessageEvent().observe(this, Observer { shouldShow ->
-            if (shouldShow != null && shouldShow) {
-                Toast.makeText(this, getString(R.string.invalid_expression_message), Toast.LENGTH_SHORT).show()
-            }
-        })
+        mCalculatorViewModel.apply {
+            this!!.getInvalidExpressionMessageEvent().observe(
+                    this@MainActivity,
+                    Observer { shouldShow ->
+                        if (shouldShow != null && shouldShow) {
+                            this@MainActivity.showInvalidExpressionMessage()
+                        }
+                    })
 
-        mCalculatorViewModel!!.getCurrentExpression().observe(this, Observer<String> { newOperation ->
-            operation.text = newOperation
-        })
+            getCurrentExpression().observe(
+                    this@MainActivity,
+                    Observer<String> { newOperation ->
+                        operation.text = newOperation
+                    })
 
-        mCalculatorViewModel!!.getResult().observe(this, Observer<String> { result ->
-            operation_result.text = result
-        })
+            getResult().observe(
+                    this@MainActivity,
+                    Observer<String> { result ->
+                        operation_result.text = result
+                    })
+        }
 
         zero.setOnClickListener { mCalculatorViewModel!!.onOperatorAdd(getString(R.string.zero)) }
         one.setOnClickListener { mCalculatorViewModel!!.onOperatorAdd(getString(R.string.one)) }
@@ -52,5 +60,9 @@ class MainActivity : AppCompatActivity() {
         multiply.setOnClickListener { mCalculatorViewModel!!.onOperatorAdd(getString(R.string.multiply_expression)) }
         plus.setOnClickListener { mCalculatorViewModel!!.onOperatorAdd(getString(R.string.plus)) }
         minus.setOnClickListener { mCalculatorViewModel!!.onOperatorAdd(getString(R.string.minus)) }
+    }
+
+    private fun showInvalidExpressionMessage() {
+        Toast.makeText(this, getString(R.string.invalid_expression_message), Toast.LENGTH_SHORT).show()
     }
 }
