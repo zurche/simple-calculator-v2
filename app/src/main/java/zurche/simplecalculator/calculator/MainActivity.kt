@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import kotlinx.android.synthetic.main.main_act.*
+import zurche.simplecalculator.app.R
 
 class MainActivity : AppCompatActivity() {
 
