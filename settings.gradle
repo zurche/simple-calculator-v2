@@ -1,1 +1,1 @@
-include ':calculator', ':app', ':base', ':instantapp'
+include ':app'
