@@ -11,7 +11,7 @@ android {
         applicationId "zurche.simplecalculator.app"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
+        versionCode 4
         versionName "1.1"
     }
 
