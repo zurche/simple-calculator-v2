@@ -17,7 +17,7 @@ class CalculatorViewModel : ViewModel() {
     private val PERCENTAGE = "%"
     private val SCIENTIFIC_NOTATION_CHAR = "E"
     private val INFINITY = "Infinity"
-    private val validOperators = Arrays.asList('+', '-', '/', '*')
+    private val validOperators = Arrays.asList("+", "-", "/", "*")
 
     private val mInvalidExpressionMessageEvent = SingleLiveEvent<Boolean>()
 
@@ -40,7 +40,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun onOperatorAdd(addedValue: String) {
-        if (currentExpressionIsInvalid() && addedValue == STRING_COMMA || addedValue == PERCENTAGE) {
+        if (currentExpressionIsInvalid() && validOperators.contains(addedValue)) {
             showInvalidExpressionMessage()
         } else {
             var isCommaAddedToExpression = false
@@ -57,14 +57,14 @@ class CalculatorViewModel : ViewModel() {
                     if (c == STRING_COMMA.toCharArray()[0]) {
                         isCommaAddedToExpression = true
                     }
-                    if (validOperators.contains(c)) {
+                    if (validOperators.contains(c.toString())) {
                         isCommaAddedToExpression = false
                     }
                 }
 
                 // If last character of expression is either a number or an operator, do not add the comma to the expression.
                 val lastCharacterOfExpression = mCurrentExpression!!.value!!.get(mCurrentExpression!!.value!!.length - 1)
-                if (validOperators.contains(lastCharacterOfExpression)) {
+                if (validOperators.contains(lastCharacterOfExpression.toString())) {
                     isCommaAddedToExpression = true
                 }
             }
@@ -129,7 +129,7 @@ class CalculatorViewModel : ViewModel() {
             mCurrentExpression!!.value == null || mCurrentExpression!!.value!!.isEmpty()
 
     private fun isValueAnOperator(value: String): Boolean {
-        return validOperators.contains(value.toCharArray()[0])
+        return validOperators.contains(value.toCharArray()[0].toString())
     }
 
     private fun clearLastCharOfExpression() {
@@ -137,7 +137,9 @@ class CalculatorViewModel : ViewModel() {
     }
 
     private fun clearLastValueIfItIsAnOperator() {
-        if (isValueAnOperator(getLastCharOfExpression().toString())) {
+        if (currentExpressionIsInvalid()) {
+            showInvalidExpressionMessage()
+        } else if (isValueAnOperator(getLastCharOfExpression().toString())) {
             clearLastCharOfExpression()
         }
     }
