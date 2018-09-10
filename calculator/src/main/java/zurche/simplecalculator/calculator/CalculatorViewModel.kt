@@ -19,6 +19,12 @@ class CalculatorViewModel : ViewModel() {
     private val INFINITY = "Infinity"
     private val validOperators = Arrays.asList('+', '-', '/', '*')
 
+    private val mInvalidExpressionMessageEvent = SingleLiveEvent<Boolean>()
+
+    fun getInvalidExpressionMessageEvent(): SingleLiveEvent<Boolean> {
+        return mInvalidExpressionMessageEvent
+    }
+
     fun getCurrentExpression(): MutableLiveData<String> {
         if (mCurrentExpression == null) {
             mCurrentExpression = MutableLiveData()
@@ -35,8 +41,7 @@ class CalculatorViewModel : ViewModel() {
 
     fun onOperatorAdd(addedValue: String) {
         if (currentExpressionIsInvalid() && addedValue == STRING_COMMA || addedValue == PERCENTAGE) {
-            /**TODO: HOW TO DO THIS?
-            view.showInvalidExpressionMessage()**/
+            showInvalidExpressionMessage()
         } else {
             var isCommaAddedToExpression = false
 
@@ -81,8 +86,7 @@ class CalculatorViewModel : ViewModel() {
 
     fun onCalculateResult() {
         if (mCurrentExpression!!.value == null || mCurrentExpression!!.value!!.contains(INFINITY)) {
-            /**TODO: HOW TO DO THIS?
-            view.showInvalidExpressionMessage()**/
+            showInvalidExpressionMessage()
         } else {
             clearLastValueIfItIsAnOperator()
 
@@ -110,7 +114,7 @@ class CalculatorViewModel : ViewModel() {
 
     fun onExpressionSignChange() {
         if (currentExpressionIsInvalid()) {
-            //SHOW INVALID EXPRESSION MESSAGE HERE
+            showInvalidExpressionMessage()
         } else {
             mCurrentExpression!!.value = if (isNumberPositive)
                 "-${mCurrentExpression!!.value}"
@@ -156,5 +160,9 @@ class CalculatorViewModel : ViewModel() {
         }
 
         return numberString.toUpperCase().contains(SCIENTIFIC_NOTATION_CHAR)
+    }
+
+    private fun showInvalidExpressionMessage() {
+        mInvalidExpressionMessageEvent.value = true
     }
 }

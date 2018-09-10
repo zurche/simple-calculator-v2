@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -14,24 +15,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Get the ViewModel.
         mCalculatorViewModel = ViewModelProviders.of(this).get(CalculatorViewModel::class.java)
 
-        // Create the observer which updates the UI.
-        val expressionObserver = Observer<String> { newOperation ->
-            // Update the UI, in this case, a TextView.
+        mCalculatorViewModel!!.getInvalidExpressionMessageEvent().observe(this, Observer { shouldShow ->
+            if (shouldShow != null && shouldShow) {
+                Toast.makeText(this, getString(R.string.invalid_expression_message), Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        mCalculatorViewModel!!.getCurrentExpression().observe(this, Observer<String> { newOperation ->
             operation.text = newOperation
-        }
+        })
 
-        // Create the observer which updates the UI.
-        val resultObserver = Observer<String> { result ->
-            // Update the UI, in this case, a TextView.
+        mCalculatorViewModel!!.getResult().observe(this, Observer<String> { result ->
             operation_result.text = result
-        }
-
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        mCalculatorViewModel!!.getCurrentExpression().observe(this, expressionObserver)
-        mCalculatorViewModel!!.getResult().observe(this, resultObserver)
+        })
 
         zero.setOnClickListener { mCalculatorViewModel!!.onOperatorAdd(getString(R.string.zero)) }
         one.setOnClickListener { mCalculatorViewModel!!.onOperatorAdd(getString(R.string.one)) }
@@ -55,9 +53,4 @@ class MainActivity : AppCompatActivity() {
         plus.setOnClickListener { mCalculatorViewModel!!.onOperatorAdd(getString(R.string.plus)) }
         minus.setOnClickListener { mCalculatorViewModel!!.onOperatorAdd(getString(R.string.minus)) }
     }
-
-    /**    override fun showInvalidExpressionMessage() {
-    Toast.makeText(this, getString(R.string.invalid_expression_message), Toast.LENGTH_LONG).show()
-    }
-     **/
 }
