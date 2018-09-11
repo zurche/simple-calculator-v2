@@ -40,7 +40,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun onOperatorAdd(addedValue: String) {
-        if (currentExpressionIsInvalid() && validOperators.contains(addedValue)) {
+        if (currentExpressionIsInvalid() && (validOperators.contains(addedValue) || STRING_COMMA == addedValue || PERCENTAGE == addedValue)) {
             showInvalidExpressionMessage()
         } else {
             var isCommaAddedToExpression = false
