@@ -8,8 +8,8 @@ import java.util.*
 
 class CalculatorViewModel : ViewModel() {
 
-    private var mCurrentExpression: MutableLiveData<String>? = null
-    private var mResult: MutableLiveData<String>? = null
+    private val mCurrentExpression = MutableLiveData<String>()
+    private val mResult = MutableLiveData<String>()
 
     private var isNumberPositive = true
 
@@ -26,17 +26,11 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun getCurrentExpression(): MutableLiveData<String> {
-        if (mCurrentExpression == null) {
-            mCurrentExpression = MutableLiveData()
-        }
-        return mCurrentExpression as MutableLiveData<String>
+        return mCurrentExpression
     }
 
     fun getResult(): MutableLiveData<String> {
-        if (mResult == null) {
-            mResult = MutableLiveData()
-        }
-        return mResult as MutableLiveData<String>
+        return mResult
     }
 
     fun onOperatorAdd(addedValue: String) {
@@ -45,14 +39,14 @@ class CalculatorViewModel : ViewModel() {
         } else {
             var isCommaAddedToExpression = false
 
-            if ((isValueAnOperator(addedValue) || addedValue == PERCENTAGE) && mCurrentExpression!!.value!!.isNotEmpty()) {
-                val lastCharacterOfExpression = mCurrentExpression!!.value!!.get(mCurrentExpression!!.value!!.length - 1)
+            if ((isValueAnOperator(addedValue) || addedValue == PERCENTAGE) && mCurrentExpression.value!!.isNotEmpty()) {
+                val lastCharacterOfExpression = mCurrentExpression.value!!.get(mCurrentExpression.value!!.length - 1)
 
                 if (isValueAnOperator(lastCharacterOfExpression.toString())) {
                     clearLastCharOfExpression()
                 }
             } else if (addedValue == STRING_COMMA) {
-                val expressionArray = mCurrentExpression!!.value!!.toCharArray()
+                val expressionArray = mCurrentExpression.value!!.toCharArray()
                 for (c in expressionArray) {
                     if (c == STRING_COMMA.toCharArray()[0]) {
                         isCommaAddedToExpression = true
@@ -63,36 +57,36 @@ class CalculatorViewModel : ViewModel() {
                 }
 
                 // If last character of expression is either a number or an operator, do not add the comma to the expression.
-                val lastCharacterOfExpression = mCurrentExpression!!.value!!.get(mCurrentExpression!!.value!!.length - 1)
+                val lastCharacterOfExpression = mCurrentExpression.value!!.get(mCurrentExpression.value!!.length - 1)
                 if (validOperators.contains(lastCharacterOfExpression.toString())) {
                     isCommaAddedToExpression = true
                 }
             }
 
             if (!isCommaAddedToExpression) {
-                if (mCurrentExpression!!.value == null) {
-                    mCurrentExpression!!.value = addedValue
+                if (mCurrentExpression.value == null) {
+                    mCurrentExpression.postValue(addedValue)
                 } else {
-                    mCurrentExpression!!.value += addedValue
+                    mCurrentExpression.postValue(mCurrentExpression.value + addedValue)
                 }
             }
         }
     }
 
     fun onClearExpression() {
-        mCurrentExpression!!.value = ""
-        mResult!!.value = ""
+        mCurrentExpression.postValue("")
+        mResult.postValue("")
     }
 
     fun onCalculateResult() {
-        if (mCurrentExpression!!.value == null || mCurrentExpression!!.value!!.contains(INFINITY)) {
+        if (mCurrentExpression.value == null || mCurrentExpression.value!!.contains(INFINITY) || mCurrentExpression.value!!.isEmpty()) {
             showInvalidExpressionMessage()
         } else {
             clearLastValueIfItIsAnOperator()
 
-            mCurrentExpression!!.value = mCurrentExpression!!.value!!.replace(PERCENTAGE.toRegex(), "/100")
+            mCurrentExpression.value = mCurrentExpression.value!!.replace(PERCENTAGE.toRegex(), "/100")
 
-            val expression = Expression(mCurrentExpression!!.value!!)
+            val expression = Expression(mCurrentExpression.value!!)
 
             val bigDecimalResult = expression.eval()
 
@@ -107,8 +101,8 @@ class CalculatorViewModel : ViewModel() {
                 stringResult = java.lang.Double.toString(doubleResult)
             }
 
-            mCurrentExpression!!.value = stringResult
-            mResult!!.value = stringResult
+            mCurrentExpression.postValue(stringResult)
+            mResult.postValue(stringResult)
         }
     }
 
@@ -116,24 +110,25 @@ class CalculatorViewModel : ViewModel() {
         if (currentExpressionIsInvalid()) {
             showInvalidExpressionMessage()
         } else {
-            mCurrentExpression!!.value = if (isNumberPositive)
-                "-${mCurrentExpression!!.value}"
+            val newCurrentExpression = if (isNumberPositive)
+                "-${mCurrentExpression.value}"
             else
-                mCurrentExpression!!.value!!.substring(1, mCurrentExpression!!.value!!.length)
+                mCurrentExpression.value!!.substring(1, mCurrentExpression.value!!.length)
 
+            mCurrentExpression.postValue(newCurrentExpression)
             isNumberPositive = !isNumberPositive
         }
     }
 
     private fun currentExpressionIsInvalid() =
-            mCurrentExpression!!.value == null || mCurrentExpression!!.value!!.isEmpty()
+            mCurrentExpression.value == null || mCurrentExpression.value!!.isEmpty()
 
     private fun isValueAnOperator(value: String): Boolean {
         return validOperators.contains(value.toCharArray()[0].toString())
     }
 
     private fun clearLastCharOfExpression() {
-        mCurrentExpression!!.value = mCurrentExpression!!.value!!.substring(0, mCurrentExpression!!.value!!.length - 1)
+        mCurrentExpression.postValue(mCurrentExpression.value!!.substring(0, mCurrentExpression.value!!.length - 1))
     }
 
     private fun clearLastValueIfItIsAnOperator() {
@@ -145,8 +140,8 @@ class CalculatorViewModel : ViewModel() {
     }
 
     private fun getLastCharOfExpression(): Char {
-        val currentExpressionLastValuePosition = mCurrentExpression!!.value!!.length - 1
-        return mCurrentExpression!!.value!![currentExpressionLastValuePosition]
+        val currentExpressionLastValuePosition = mCurrentExpression.value!!.length - 1
+        return mCurrentExpression.value!![currentExpressionLastValuePosition]
     }
 
     private fun isValueInteger(number: Double): Boolean {
