@@ -4,14 +4,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion compile_sdk_version
 
     defaultConfig {
         applicationId "zurche.simplecalculator.app"
-        minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 5
-        versionName "1.1"
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+        versionCode version_code
+        versionName version_name
     }
 
     buildTypes {
@@ -28,8 +28,8 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:appcompat-v7:27.1.1'
-    api 'com.android.support.constraint:constraint-layout:1.1.2'
+    api "com.android.support:appcompat-v7:$support_library_version"
+    api "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -40,8 +40,6 @@ dependencies {
 
     implementation 'com.udojava:EvalEx:2.0'
 
-    def lifecycle_version = "1.1.0"
-    // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
 
