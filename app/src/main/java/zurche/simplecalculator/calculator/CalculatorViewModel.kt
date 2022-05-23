@@ -91,12 +91,13 @@ class CalculatorViewModel : ViewModel() {
 
             val expression = Expression(mCurrentExpression.value!!)
 
-            var bigDecimalResult = BigDecimal(0)
+            val bigDecimalResult: BigDecimal
 
             try {
                 bigDecimalResult = expression.eval()
             } catch (exception: ArithmeticException) {
                 showInvalidExpressionMessage()
+                return
             }
 
             val doubleResult = bigDecimalResult.toDouble()
