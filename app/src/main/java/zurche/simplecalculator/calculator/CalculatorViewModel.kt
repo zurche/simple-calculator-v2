@@ -91,16 +91,20 @@ class CalculatorViewModel : ViewModel() {
 
             val expression = Expression(mCurrentExpression.value!!)
 
-            val bigDecimalResult = expression.eval()
+            var bigDecimalResult = BigDecimal(0)
+
+            try {
+                bigDecimalResult = expression.eval()
+            } catch (exception: ArithmeticException) {
+                showInvalidExpressionMessage()
+            }
 
             val doubleResult = bigDecimalResult.toDouble()
 
             val stringResult: String
 
             if (isValueInteger(doubleResult) && !isScientificNotation(
-                    java.lang.Double.toString(
-                        doubleResult
-                    )
+                    doubleResult.toString()
                 )
             ) {
                 val roundedValue = Math.round(doubleResult).toInt()
