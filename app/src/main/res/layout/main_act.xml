@@ -10,19 +10,19 @@
             type="zurche.simplecalculator.calculator.CalculatorViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/operation_steps_area_divider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.1" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/operation_result_dividing_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             app:layout_constraintTop_toTopOf="@id/operation_steps_area_divider"
             tools:text="15" />
 
-        <android.support.constraint.helper.Flow
+        <androidx.constraintlayout.helper.widget.Flow
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:constraint_referenced_ids="ac, plus_minus_switch, percentage, divide,
@@ -281,5 +281,5 @@
             app:layout_constraintStart_toEndOf="@id/comma"
             app:layout_constraintTop_toBottomOf="@id/three" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
