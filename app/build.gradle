@@ -1,17 +1,24 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+}
 
 android {
     compileSdkVersion compile_sdk_version
 
     defaultConfig {
         applicationId "zurche.simplecalculator.app"
-        minSdkVersion min_sdk_version
-        targetSdkVersion target_sdk_version
+        minSdk min_sdk_version
+        targetSdk target_sdk_version
         versionCode version_code
         versionName version_name
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
     }
 
     buildTypes {
@@ -37,9 +44,8 @@ dependencies {
     api "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
@@ -50,4 +56,6 @@ dependencies {
 
     implementation 'com.android.databinding:compiler:3.1.4'
     annotationProcessor 'com.android.databinding:compiler:3.1.4'
+
+    testImplementation 'io.mockk:mockk:1.12.4'
 }
