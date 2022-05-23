@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         mCalculatorViewModel = viewModels<CalculatorViewModel>().value
 
         mCalculatorViewModel.apply {
-            this!!.getInvalidExpressionMessageEvent().observe(
+            this?.getInvalidExpressionMessageEvent()?.observe(
                 this@MainActivity,
                 Observer { shouldShow ->
                     if (shouldShow != null && shouldShow) {
