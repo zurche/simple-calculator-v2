@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.udojava.evalex.Expression
 import java.math.BigDecimal
-import java.util.*
+import kotlin.math.roundToInt
 
 class CalculatorViewModel : ViewModel() {
 
@@ -81,15 +81,16 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun onCalculateResult() {
-        if (mCurrentExpression.value == null || mCurrentExpression.value!!.contains(INFINITY) || mCurrentExpression.value!!.isEmpty() || validOperators.contains(mCurrentExpression.value!!.last().toString())) {
+        val currentExpression: String? = validateExpression(mCurrentExpression.value)
+        if (currentExpression == null) {
             showInvalidExpressionMessage()
         } else {
             clearLastValueIfItIsAnOperator()
 
             mCurrentExpression.value =
-                mCurrentExpression.value!!.replace(PERCENTAGE.toRegex(), "/100")
+                currentExpression.replace(PERCENTAGE.toRegex(), "/100")
 
-            val expression = Expression(mCurrentExpression.value!!)
+            val expression = Expression(currentExpression)
 
             val bigDecimalResult: BigDecimal
 
@@ -102,22 +103,29 @@ class CalculatorViewModel : ViewModel() {
 
             val doubleResult = bigDecimalResult.toDouble()
 
-            val stringResult: String
-
-            if (isValueInteger(doubleResult) && !isScientificNotation(
+            val stringResult: String =
+                if (isValueInteger(doubleResult) && !isScientificNotation(doubleResult.toString())) {
+                    val roundedValue = doubleResult.roundToInt()
+                    roundedValue.toString()
+                } else {
                     doubleResult.toString()
-                )
-            ) {
-                val roundedValue = Math.round(doubleResult).toInt()
-                stringResult = roundedValue.toString()
-            } else {
-                stringResult = java.lang.Double.toString(doubleResult)
-            }
+                }
 
             mCurrentExpression.postValue(stringResult)
             mResult.postValue(stringResult)
         }
     }
+
+    private fun validateExpression(expression: String?): String? =
+        if (expression == null
+            || expression.contains(INFINITY)
+            || expression.isEmpty()
+            || validOperators.contains(expression.last().toString())
+        ) {
+            null
+        } else {
+            expression
+        }
 
     fun onExpressionSignChange() {
         if (currentExpressionIsInvalid()) {
