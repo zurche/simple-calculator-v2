@@ -36,21 +36,24 @@ class CalculatorViewModelTest {
     @Test
     @Ignore("An extra call is made at the end. Need to verify why. Ignoring for now.")
     fun `When dividing by zero error is displayed`() {
-        calculatorViewModel.onOperatorAdd("0")
-        calculatorViewModel.onOperatorAdd("/")
-        calculatorViewModel.onOperatorAdd("0")
-
-        calculatorViewModel.onCalculateResult()
+        with(calculatorViewModel) {
+            onOperatorAdd("0")
+            onOperatorAdd("/")
+            onOperatorAdd("0")
+            onCalculateResult()
+        }
 
         assertTrue(
             "Invalid Expression message should be shown in this scenario",
             calculatorViewModel.getInvalidExpressionMessageEvent().value ?: false
         )
 
-        verifyOrder {
-            expressionObserver.onChanged("0")
-            expressionObserver.onChanged("0/")
-            expressionObserver.onChanged("0/0")
+        verifySequence {
+            with(expressionObserver) {
+                onChanged("0")
+                onChanged("0/")
+                onChanged("0/0")
+            }
         }
     }
 
@@ -140,9 +143,11 @@ class CalculatorViewModelTest {
 
     @Test
     fun `Given the expression is valid And already has a trailing comma When adding an extra comma And checking the current expression Then error is not displayed And extra comma is not added`() {
-        calculatorViewModel.onOperatorAdd("1")
-        calculatorViewModel.onOperatorAdd(".")
-        calculatorViewModel.onOperatorAdd(".")
+        with(calculatorViewModel) {
+            onOperatorAdd("1")
+            onOperatorAdd(".")
+            onOperatorAdd(".")
+        }
 
         assertNull(
             "Invalid Expression message should be not shown in this scenario",
@@ -158,9 +163,11 @@ class CalculatorViewModelTest {
     @Test
     @Ignore("An extra call is made at the end. Need to verify why. Ignoring for now.")
     fun `Given the expression is valid And already has a trailing plus sign When adding another plus sign Then error is not displayed And extra plus sign is not added`() {
-        calculatorViewModel.onOperatorAdd("1")
-        calculatorViewModel.onOperatorAdd("+")
-        calculatorViewModel.onOperatorAdd("+")
+        with(calculatorViewModel) {
+            onOperatorAdd("1")
+            onOperatorAdd("+")
+            onOperatorAdd("+")
+        }
 
         assertNull(
             "Invalid Expression message should be not shown in this scenario",
@@ -170,6 +177,27 @@ class CalculatorViewModelTest {
         verifyOrder {
             expressionObserver.onChanged("1")
             expressionObserver.onChanged("1+")
+        }
+    }
+
+    @Test
+    fun `Given the last value of the expression is an operator When clicking equals Then error invalid expression message is displayed`() {
+        with(calculatorViewModel) {
+            onOperatorAdd("1")
+            onOperatorAdd("+")
+            onCalculateResult()
+        }
+
+        assertTrue(
+            "Invalid Expression message should be shown in this scenario",
+            calculatorViewModel.getInvalidExpressionMessageEvent().value ?: false
+        )
+
+        verifySequence {
+            with(expressionObserver) {
+                onChanged("1")
+                onChanged("1+")
+            }
         }
     }
 }
