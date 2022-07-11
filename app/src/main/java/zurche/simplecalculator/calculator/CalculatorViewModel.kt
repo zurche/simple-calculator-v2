@@ -17,7 +17,7 @@ class CalculatorViewModel : ViewModel() {
     private val PERCENTAGE = "%"
     private val SCIENTIFIC_NOTATION_CHAR = "E"
     private val INFINITY = "Infinity"
-    private val validOperators = Arrays.asList("+", "-", "/", "*")
+    private val validOperators: List<String> = listOf("+", "-", "/", "*")
 
     private val mInvalidExpressionMessageEvent = SingleLiveEvent<Boolean>()
 
@@ -81,7 +81,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun onCalculateResult() {
-        if (mCurrentExpression.value == null || mCurrentExpression.value!!.contains(INFINITY) || mCurrentExpression.value!!.isEmpty()) {
+        if (mCurrentExpression.value == null || mCurrentExpression.value!!.contains(INFINITY) || mCurrentExpression.value!!.isEmpty() || validOperators.contains(mCurrentExpression.value!!.last().toString())) {
             showInvalidExpressionMessage()
         } else {
             clearLastValueIfItIsAnOperator()
