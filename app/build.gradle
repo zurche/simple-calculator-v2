@@ -40,6 +40,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'zurche.simplecalculator.app'
 }
 
 dependencies {

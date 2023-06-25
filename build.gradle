@@ -1,11 +1,11 @@
 buildscript {
     ext {
-        version_code = 5
-        version_name = "1.1"
+        version_code = 6
+        version_name = "3.0"
 
-        compile_sdk_version = 32
-        target_sdk_version = 32
-        min_sdk_version = 21
+        compile_sdk_version = 33
+        target_sdk_version = 33
+        min_sdk_version = 24
 
         lifecycle_version = '1.1.1'
         constraint_layout_version = '2.0.4'
@@ -15,9 +15,9 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application' version '7.4.2' apply false
-    id 'com.android.library' version '7.4.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.6.21' apply false
+    id 'com.android.application' version '8.0.2' apply false
+    id 'com.android.library' version '8.0.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
 }
 
 task clean(type: Delete) {
