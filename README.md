@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/zurche/simple-calculator-v2/master/img/playstore/feature_graphic.png" alt="Example App"/>
-</p>
 
 ![Screenshot_20230626_111809](https://github.com/zurche/simple-calculator-v2/assets/15671525/16639495-2a27-4cd4-a61b-dd05820abcda)
 
