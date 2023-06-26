@@ -26,15 +26,45 @@ import zurche.simplecalculator.calculator.theme.NumberTeal
 @Preview(device = Devices.PIXEL_4, backgroundColor = 0xFFFFFFFF, showBackground = true)
 fun CalculatorUI() {
     Column(modifier = Modifier.fillMaxHeight()) {
-        Row(
-            modifier = Modifier
-                .background(InputGray)
-                .fillMaxHeight(0.33f)
-                .fillMaxWidth()
-        ) {
+        InputAreaUI()
 
+        NumPadUI()
+    }
+
+}
+
+@Composable
+@Preview(device = Devices.PIXEL_4, backgroundColor = 0xFFFFFFFF, showBackground = true)
+private fun InputAreaUI() {
+    Box(
+        modifier = Modifier
+            .background(InputGray)
+            .fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+            Text(
+                text = "20 x 10 + 50",
+                modifier = Modifier.background(InputGray),
+                color = Color.White,
+                style = MaterialTheme.typography.displaySmall
+            )
+            Text(
+                text = "250",
+                modifier = Modifier.background(InputGray),
+                color = Color.White,
+                style = MaterialTheme.typography.displayLarge
+            )
         }
+    }
+}
 
+@Composable
+@Preview
+private fun NumPadUI() {
+    Column(
+        modifier = Modifier.fillMaxHeight(),
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -88,13 +118,6 @@ fun CalculatorUI() {
             PadButtonUI(PadButton.Equals)
         }
     }
-
-}
-
-@Composable
-@Preview
-fun InputAreaUI() {
-    TODO()
 }
 
 enum class PadButton(val textResource: Int, val backgroundColor: Color) {
