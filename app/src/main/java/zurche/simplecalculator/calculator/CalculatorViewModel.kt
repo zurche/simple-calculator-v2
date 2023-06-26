@@ -1,10 +1,12 @@
 package zurche.simplecalculator.calculator
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.udojava.evalex.Expression
 import java.math.BigDecimal
-import java.util.*
+import java.util.Locale
+import kotlin.math.roundToInt
 
 class CalculatorViewModel : ViewModel() {
 
@@ -13,11 +15,11 @@ class CalculatorViewModel : ViewModel() {
 
     private var isNumberPositive = true
 
-    private val STRING_COMMA = "."
-    private val PERCENTAGE = "%"
-    private val SCIENTIFIC_NOTATION_CHAR = "E"
-    private val INFINITY = "Infinity"
-    private val validOperators = Arrays.asList("+", "-", "/", "*")
+    private val stringComma = "."
+    private val percentage = "%"
+    private val scientificNotationChar = "E"
+    private val infinity = "Infinity"
+    private val validOperators: List<String> = listOf("+", "-", "/", "*")
 
     private val mInvalidExpressionMessageEvent = SingleLiveEvent<Boolean>()
 
@@ -25,7 +27,7 @@ class CalculatorViewModel : ViewModel() {
         return mInvalidExpressionMessageEvent
     }
 
-    fun getCurrentExpression(): MutableLiveData<String> {
+    fun getCurrentExpression(): LiveData<String> {
         return mCurrentExpression
     }
 
@@ -34,21 +36,22 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun onOperatorAdd(addedValue: String) {
-        if (currentExpressionIsInvalid() && (validOperators.contains(addedValue) || STRING_COMMA == addedValue || PERCENTAGE == addedValue)) {
+        if (currentExpressionIsInvalid() && (validOperators.contains(addedValue) || stringComma == addedValue || percentage == addedValue)) {
             showInvalidExpressionMessage()
         } else {
             var isCommaAddedToExpression = false
 
-            if ((isValueAnOperator(addedValue) || addedValue == PERCENTAGE) && mCurrentExpression.value!!.isNotEmpty()) {
-                val lastCharacterOfExpression = mCurrentExpression.value!!.get(mCurrentExpression.value!!.length - 1)
+            if ((isValueAnOperator(addedValue) || addedValue == percentage) && mCurrentExpression.value!!.isNotEmpty()) {
+                val lastCharacterOfExpression =
+                    mCurrentExpression.value!!.get(mCurrentExpression.value!!.length - 1)
 
                 if (isValueAnOperator(lastCharacterOfExpression.toString())) {
                     clearLastCharOfExpression()
                 }
-            } else if (addedValue == STRING_COMMA) {
+            } else if (addedValue == stringComma) {
                 val expressionArray = mCurrentExpression.value!!.toCharArray()
                 for (c in expressionArray) {
-                    if (c == STRING_COMMA.toCharArray()[0]) {
+                    if (c == stringComma.toCharArray()[0]) {
                         isCommaAddedToExpression = true
                     }
                     if (validOperators.contains(c.toString())) {
@@ -57,7 +60,8 @@ class CalculatorViewModel : ViewModel() {
                 }
 
                 // If last character of expression is either a number or an operator, do not add the comma to the expression.
-                val lastCharacterOfExpression = mCurrentExpression.value!!.get(mCurrentExpression.value!!.length - 1)
+                val lastCharacterOfExpression =
+                    mCurrentExpression.value!!.get(mCurrentExpression.value!!.length - 1)
                 if (validOperators.contains(lastCharacterOfExpression.toString())) {
                     isCommaAddedToExpression = true
                 }
@@ -79,32 +83,51 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun onCalculateResult() {
-        if (mCurrentExpression.value == null || mCurrentExpression.value!!.contains(INFINITY) || mCurrentExpression.value!!.isEmpty()) {
+        val currentExpression: String? = validateExpression(mCurrentExpression.value)
+        if (currentExpression == null) {
             showInvalidExpressionMessage()
         } else {
             clearLastValueIfItIsAnOperator()
 
-            mCurrentExpression.value = mCurrentExpression.value!!.replace(PERCENTAGE.toRegex(), "/100")
+            mCurrentExpression.value =
+                currentExpression.replace(percentage.toRegex(), "/100")
 
-            val expression = Expression(mCurrentExpression.value!!)
+            val expression = Expression(currentExpression)
 
-            val bigDecimalResult = expression.eval()
+            val bigDecimalResult: BigDecimal
+
+            try {
+                bigDecimalResult = expression.eval()
+            } catch (exception: ArithmeticException) {
+                showInvalidExpressionMessage()
+                return
+            }
 
             val doubleResult = bigDecimalResult.toDouble()
 
-            val stringResult: String
-
-            if (isValueInteger(doubleResult) && !isScientificNotation(java.lang.Double.toString(doubleResult))) {
-                val roundedValue = Math.round(doubleResult).toInt()
-                stringResult = roundedValue.toString()
-            } else {
-                stringResult = java.lang.Double.toString(doubleResult)
-            }
+            val stringResult: String =
+                if (isValueInteger(doubleResult) && !isScientificNotation(doubleResult.toString())) {
+                    val roundedValue = doubleResult.roundToInt()
+                    roundedValue.toString()
+                } else {
+                    doubleResult.toString()
+                }
 
             mCurrentExpression.postValue(stringResult)
             mResult.postValue(stringResult)
         }
     }
+
+    private fun validateExpression(expression: String?): String? =
+        if (expression == null
+            || expression.contains(infinity)
+            || expression.isEmpty()
+            || validOperators.contains(expression.last().toString())
+        ) {
+            null
+        } else {
+            expression
+        }
 
     fun onExpressionSignChange() {
         if (currentExpressionIsInvalid()) {
@@ -121,14 +144,19 @@ class CalculatorViewModel : ViewModel() {
     }
 
     private fun currentExpressionIsInvalid() =
-            mCurrentExpression.value == null || mCurrentExpression.value!!.isEmpty()
+        mCurrentExpression.value == null || mCurrentExpression.value!!.isEmpty()
 
     private fun isValueAnOperator(value: String): Boolean {
         return validOperators.contains(value.toCharArray()[0].toString())
     }
 
     private fun clearLastCharOfExpression() {
-        mCurrentExpression.postValue(mCurrentExpression.value!!.substring(0, mCurrentExpression.value!!.length - 1))
+        mCurrentExpression.postValue(
+            mCurrentExpression.value!!.substring(
+                0,
+                mCurrentExpression.value!!.length - 1
+            )
+        )
     }
 
     private fun clearLastValueIfItIsAnOperator() {
@@ -156,7 +184,7 @@ class CalculatorViewModel : ViewModel() {
             return false
         }
 
-        return numberString.toUpperCase().contains(SCIENTIFIC_NOTATION_CHAR)
+        return numberString.uppercase(Locale.ROOT).contains(scientificNotationChar)
     }
 
     private fun showInvalidExpressionMessage() {

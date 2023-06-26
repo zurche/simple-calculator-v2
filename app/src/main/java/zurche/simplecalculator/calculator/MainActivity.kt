@@ -1,42 +1,39 @@
 package zurche.simplecalculator.calculator
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import zurche.simplecalculator.app.R
-import zurche.simplecalculator.app.databinding.MainActBinding
+import zurche.simplecalculator.calculator.composables.CalculatorScreen
+import zurche.simplecalculator.calculator.ui.theme.SimpleCalcTheme
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
-    private var mCalculatorViewModel: CalculatorViewModel? = null
+    private var viewModel: CalculatorViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_act)
 
-        mCalculatorViewModel = ViewModelProviders.of(this).get(CalculatorViewModel::class.java)
+        viewModel = viewModels<CalculatorViewModel>().value
 
-        mCalculatorViewModel.apply {
-            this!!.getInvalidExpressionMessageEvent().observe(
-                    this@MainActivity,
-                    Observer { shouldShow ->
-                        if (shouldShow != null && shouldShow) {
-                            this@MainActivity.showInvalidExpressionMessage()
-                        }
-                    })
+        viewModel.apply {
+            this?.getInvalidExpressionMessageEvent()?.observe(this@MainActivity) { shouldShow ->
+                if (shouldShow != null && shouldShow) {
+                    this@MainActivity.showInvalidExpressionMessage()
+                }
+            }
         }
 
-        val binding : MainActBinding? = DataBindingUtil.setContentView(this, R.layout.main_act)
-        binding?.let{
-            it.viewModel = mCalculatorViewModel
-            it.setLifecycleOwner(this)
+        setContent {
+            SimpleCalcTheme {
+                CalculatorScreen(viewModel)
+            }
         }
     }
 
-    private fun showInvalidExpressionMessage() {
-        Toast.makeText(this, getString(R.string.invalid_expression_message), Toast.LENGTH_SHORT).show()
-    }
+    private fun showInvalidExpressionMessage(): Unit =
+        Toast.makeText(this, getString(R.string.invalid_expression_message), Toast.LENGTH_SHORT)
+            .show()
 }
