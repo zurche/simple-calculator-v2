@@ -3,25 +3,22 @@ package zurche.simplecalculator.calculator
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import zurche.simplecalculator.app.R
-import zurche.simplecalculator.app.databinding.MainActBinding
+import zurche.simplecalculator.calculator.composables.CalculatorScreen
+import zurche.simplecalculator.calculator.ui.theme.SimpleCalcTheme
 
 class MainActivity : ComponentActivity() {
 
-    private lateinit var binding: MainActBinding
-    private var mCalculatorViewModel: CalculatorViewModel? = null
+    private var viewModel: CalculatorViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = MainActBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        viewModel = viewModels<CalculatorViewModel>().value
 
-        mCalculatorViewModel = viewModels<CalculatorViewModel>().value
-
-        mCalculatorViewModel.apply {
+        viewModel.apply {
             this?.getInvalidExpressionMessageEvent()?.observe(this@MainActivity) { shouldShow ->
                 if (shouldShow != null && shouldShow) {
                     this@MainActivity.showInvalidExpressionMessage()
@@ -29,9 +26,10 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        binding.let {
-            it.viewModel = mCalculatorViewModel
-            it.lifecycleOwner = this
+        setContent {
+            SimpleCalcTheme {
+                CalculatorScreen(viewModel)
+            }
         }
     }
 

@@ -21,11 +21,10 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import zurche.simplecalculator.calculator.CalculatorViewModel
-import zurche.simplecalculator.calculator.theme.DarkOperatorTeal
-import zurche.simplecalculator.calculator.theme.EqualsTeal
-import zurche.simplecalculator.calculator.theme.InputGray
-import zurche.simplecalculator.calculator.theme.NumberTeal
-import zurche.simplecalculator.calculator.theme.SimpleCalcTheme
+import zurche.simplecalculator.calculator.ui.theme.DarkOperatorTeal
+import zurche.simplecalculator.calculator.ui.theme.EqualsTeal
+import zurche.simplecalculator.calculator.ui.theme.InputGray
+import zurche.simplecalculator.calculator.ui.theme.NumberTeal
 
 @Composable
 @Preview(device = Devices.PIXEL_4, backgroundColor = 0xFFFFFFFF, showBackground = true)
@@ -33,17 +32,14 @@ fun CalculatorScreen(viewModel: CalculatorViewModel? = null) {
     val currentExpression = viewModel?.getCurrentExpression()?.observeAsState()?.value
     val result = viewModel?.getResult()?.observeAsState()?.value
 
-    SimpleCalcTheme {
-        Column(modifier = Modifier.fillMaxHeight()) {
-            Box(modifier = Modifier.weight(0.33f)) {
-                InputAreaUI(currentExpression, result)
-            }
-            Box(modifier = Modifier.weight(0.66f)) {
-                NumPadUI(viewModel)
-            }
+    Column(modifier = Modifier.fillMaxHeight()) {
+        Box(modifier = Modifier.weight(0.33f)) {
+            InputAreaUI(currentExpression, result)
+        }
+        Box(modifier = Modifier.weight(0.66f)) {
+            NumPadUI(viewModel)
         }
     }
-
 }
 
 @Composable
@@ -191,7 +187,7 @@ enum class PadButton(
     Three("3", NumberTeal),
     Plus("+", DarkOperatorTeal),
     Zero("0", NumberTeal),
-    Decimal(",", NumberTeal),
+    Decimal(",", NumberTeal, "."),
     Equals("=", EqualsTeal)
 }
 

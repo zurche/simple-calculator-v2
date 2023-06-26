@@ -9,7 +9,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="zurche.simplecalculator.calculator.MainActivity2"
+            android:name="zurche.simplecalculator.calculator.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
