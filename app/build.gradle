@@ -28,18 +28,11 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    buildFeatures {
-        viewBinding true
-    }
     namespace 'zurche.simplecalculator.app'
 
     buildFeatures {
@@ -81,8 +74,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'com.udojava:EvalEx:2.0'
-
-    annotationProcessor 'com.android.databinding:compiler:3.1.4'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'io.mockk:mockk:1.12.4'
