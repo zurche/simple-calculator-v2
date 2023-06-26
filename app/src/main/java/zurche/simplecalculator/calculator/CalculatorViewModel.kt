@@ -113,7 +113,6 @@ class CalculatorViewModel : ViewModel() {
                     doubleResult.toString()
                 }
 
-            mCurrentExpression.postValue(stringResult)
             mResult.postValue(stringResult)
         }
     }
