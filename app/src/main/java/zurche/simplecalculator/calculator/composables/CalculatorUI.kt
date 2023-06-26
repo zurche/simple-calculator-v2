@@ -13,37 +13,37 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.MutableLiveData
 import zurche.simplecalculator.calculator.CalculatorViewModel
 import zurche.simplecalculator.calculator.theme.DarkOperatorTeal
 import zurche.simplecalculator.calculator.theme.EqualsTeal
 import zurche.simplecalculator.calculator.theme.InputGray
 import zurche.simplecalculator.calculator.theme.NumberTeal
+import zurche.simplecalculator.calculator.theme.SimpleCalcTheme
 
 @Composable
 @Preview(device = Devices.PIXEL_4, backgroundColor = 0xFFFFFFFF, showBackground = true)
-fun CalculatorUI(viewModel: CalculatorViewModel? = null) {
-    val currentExpression  = viewModel?.getCurrentExpression()?.observeAsState()?.value
-    val result  = viewModel?.getResult()?.observeAsState()?.value
+fun CalculatorScreen(viewModel: CalculatorViewModel? = null) {
+    val currentExpression = viewModel?.getCurrentExpression()?.observeAsState()?.value
+    val result = viewModel?.getResult()?.observeAsState()?.value
 
-    Column(modifier = Modifier.fillMaxHeight()) {
-        Box(modifier = Modifier.weight(0.33f)) {
-            InputAreaUI(currentExpression, result)
-        }
-        Box(modifier = Modifier.weight(0.66f)) {
-            NumPadUI(viewModel)
+    SimpleCalcTheme {
+        Column(modifier = Modifier.fillMaxHeight()) {
+            Box(modifier = Modifier.weight(0.33f)) {
+                InputAreaUI(currentExpression, result)
+            }
+            Box(modifier = Modifier.weight(0.66f)) {
+                NumPadUI(viewModel)
+            }
         }
     }
+
 }
 
 @Composable
@@ -169,15 +169,19 @@ private fun FourButtonPadRow(
     }
 }
 
-enum class PadButton(val textResource: String, val backgroundColor: Color) {
+enum class PadButton(
+    val buttonText: String,
+    val backgroundColor: Color,
+    val expressionValue: String = buttonText
+) {
     AC("AC", EqualsTeal),
     PlusMinus("+/-", EqualsTeal),
     Percent("%", EqualsTeal),
-    Divide("/", DarkOperatorTeal),
+    Divide("÷", DarkOperatorTeal, "/"),
     Seven("7", NumberTeal),
     Eight("8", NumberTeal),
     Nine("9", NumberTeal),
-    Multiply("x", DarkOperatorTeal),
+    Multiply("x", DarkOperatorTeal, "*"),
     Four("4", NumberTeal),
     Five("5", NumberTeal),
     Six("6", NumberTeal),
@@ -199,12 +203,17 @@ fun PadButtonUI(button: PadButton = PadButton.AC, viewModel: CalculatorViewModel
             .background(button.backgroundColor)
             .fillMaxSize()
             .clickable(onClick = {
-                viewModel?.onOperatorAdd(button.textResource)
+                when (button) {
+                    PadButton.AC -> viewModel?.onClearExpression()
+                    PadButton.PlusMinus -> viewModel?.onExpressionSignChange()
+                    PadButton.Equals -> viewModel?.onCalculateResult()
+                    else -> viewModel?.onOperatorAdd(button.expressionValue)
+                }
             }),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = button.textResource,
+            text = button.buttonText,
             color = Color.White,
             style = MaterialTheme.typography.displayMedium
         )

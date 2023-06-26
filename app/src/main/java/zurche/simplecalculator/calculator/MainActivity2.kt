@@ -6,8 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import zurche.simplecalculator.app.R
-import zurche.simplecalculator.calculator.composables.CalculatorUI
-import zurche.simplecalculator.calculator.ui.theme.SimpleCalcTheme
+import zurche.simplecalculator.calculator.composables.CalculatorScreen
 
 class MainActivity2 : ComponentActivity() {
 
@@ -27,9 +26,7 @@ class MainActivity2 : ComponentActivity() {
         }
 
         setContent {
-            SimpleCalcTheme {
-                CalculatorUI(viewModel)
-            }
+            CalculatorScreen(viewModel)
         }
     }
 
