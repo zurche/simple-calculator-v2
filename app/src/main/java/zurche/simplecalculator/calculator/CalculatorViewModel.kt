@@ -1,5 +1,6 @@
 package zurche.simplecalculator.calculator
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.udojava.evalex.Expression
@@ -26,7 +27,7 @@ class CalculatorViewModel : ViewModel() {
         return mInvalidExpressionMessageEvent
     }
 
-    fun getCurrentExpression(): MutableLiveData<String> {
+    fun getCurrentExpression(): LiveData<String> {
         return mCurrentExpression
     }
 

@@ -26,4 +26,5 @@
 
     <!-- Messages -->
     <string name="invalid_expression_message">Invalid expression</string>
+    <string name="title_activity_main2">MainActivity2</string>
 </resources>
