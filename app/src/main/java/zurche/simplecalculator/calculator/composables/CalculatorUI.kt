@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import zurche.simplecalculator.app.R
 import zurche.simplecalculator.calculator.theme.DarkOperatorTeal
 import zurche.simplecalculator.calculator.theme.EqualsTeal
@@ -45,7 +47,8 @@ private fun InputAreaUI() {
     Column(
         modifier = Modifier
             .background(InputGray)
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(8.dp),
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
@@ -53,13 +56,16 @@ private fun InputAreaUI() {
             text = "20 x 10 + 50",
             modifier = Modifier.background(InputGray),
             color = Color.White,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            maxLines = 1
         )
+
         Text(
             text = "250",
             modifier = Modifier.background(InputGray),
             color = Color.White,
-            style = MaterialTheme.typography.displayLarge
+            style = MaterialTheme.typography.displayLarge,
+            maxLines = 1
         )
     }
 }
@@ -71,105 +77,32 @@ private fun NumPadUI() {
         modifier = Modifier.fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.2f),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.AC)
-            }
+        val rowModifier = Modifier
+            .fillMaxWidth()
+            .weight(0.2f)
 
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.PlusMinus)
-            }
+        FourButtonPadRow(
+            rowModifier,
+            listOf(PadButton.AC, PadButton.PlusMinus, PadButton.Percent, PadButton.Divide)
+        )
 
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Percent)
-            }
+        FourButtonPadRow(
+            rowModifier,
+            listOf(PadButton.Seven, PadButton.Eight, PadButton.Nine, PadButton.Multiply)
+        )
 
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Divide)
-            }
-        }
+        FourButtonPadRow(
+            rowModifier,
+            listOf(PadButton.Four, PadButton.Five, PadButton.Six, PadButton.Plus)
+        )
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.2f),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Seven)
-            }
-
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Eight)
-            }
-
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Nine)
-            }
-
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Multiply)
-            }
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.2f),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Four)
-            }
-
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Five)
-            }
-
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Six)
-            }
-
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Plus)
-            }
-        }
+        FourButtonPadRow(
+            rowModifier,
+            listOf(PadButton.One, PadButton.Two, PadButton.Three, PadButton.Minus)
+        )
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.2f),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.One)
-            }
-
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Two)
-            }
-
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Three)
-            }
-
-            Column(modifier = Modifier.weight(0.25f)) {
-                PadButtonUI(PadButton.Minus)
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.2f),
+            modifier = rowModifier,
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -183,6 +116,29 @@ private fun NumPadUI() {
 
             Column(modifier = Modifier.weight(0.5f)) {
                 PadButtonUI(PadButton.Equals)
+            }
+        }
+    }
+}
+
+@Composable
+private fun FourButtonPadRow(
+    modifier: Modifier = Modifier,
+    rowElements: List<PadButton> = listOf(
+        PadButton.AC,
+        PadButton.PlusMinus,
+        PadButton.Percent,
+        PadButton.Divide
+    )
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        for (rowElement in rowElements) {
+            Column(modifier = Modifier.weight(0.25f)) {
+                PadButtonUI(rowElement)
             }
         }
     }
